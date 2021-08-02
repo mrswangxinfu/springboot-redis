@@ -1,0 +1,64 @@
+server:
+  port: 8082
+  servlet:
+    context-path: /wxf-boot
+
+# Redis数据库索引（默认为0）
+spring:
+# redis配置
+  redis:
+    database: 0
+# Redis服务器地址
+    host: 127.0.0.1
+# Redis服务器连接端口
+    port: 6379
+# Redis服务器连接密码（默认为空）
+    password:
+# 连接超时时间（毫秒）
+    timeout: 1000
+# 使用lettuce连接池
+    lettuce:
+      # 连接池最大连接数（使用负值表示没有限制）
+      pool:
+        max-active: 200
+      # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-wait: -1
+      # 连接池中的最大空闲连接
+        max-idle: 10
+      # 连接池中的最小空闲连接
+        min-idle: 0
+ # kafka配置
+  kafka:
+    bootstrap-servers: 127.0.0.1:9092
+    # 生产者配置
+    producer:
+      acks: all
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      #value 序列化
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+    # 消费者配置
+    consumer:
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      #value 反序列化
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      #key 反序列化
+      # 自动提交时若groupID为null，则不能设置为true
+      enable-auto-commit: false
+      auto-commit-interval: 1000
+      max-poll-records-config: 1024
+      properties:
+        sasl:
+          mechanism:
+        security:
+          protocol:
+        jaas:
+          config: org.apache.kafka.common.security.scram.ScramLoginModule required username= password=
+    listener:
+      concurrency: 5
+    properties:
+      sasl:
+        mechanism:
+        jaas:
+          config: org.apache.kafka.common.security.scram.ScramLoginModule required username= password=
+      security:
+        protocol:
