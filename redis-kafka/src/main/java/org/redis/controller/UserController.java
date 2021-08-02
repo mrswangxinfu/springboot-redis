@@ -3,6 +3,7 @@ package org.redis.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.redis.service.UserServiceImpl;
+import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -12,6 +13,7 @@ import java.util.concurrent.ExecutionException;
 @RestController
 @Slf4j
 @RequestMapping("/user")
+@Scope(scopeName = "prototype")// 设置为多例
 public class UserController {
     @Resource
     private UserServiceImpl service;
@@ -22,7 +24,9 @@ public class UserController {
     }
     @GetMapping("/getString")
     public String getStringByKey(@RequestParam(value = "key") String key) {
-        return service.getStringByKey(key);
+        System.out.println(this);
+        return "success";
+//        return service.getStringByKey(key);
     }
 
     @GetMapping("/setString")
